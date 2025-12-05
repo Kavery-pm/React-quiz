@@ -1,8 +1,9 @@
 import { useCallback, useRef, useState } from "react";
 import questions from "../../questions";
-import QuizCompleted from '../../assets/quiz-complete.png';
+
 import QuestionTimer from "../QuestionTimer";
 import Answers from "../Answers";
+import Summary from "../Summary";
 
 const Quiz = () => {
     const [answerState, setanswerState] = useState('');
@@ -18,7 +19,6 @@ const Quiz = () => {
         setTimeout(() => {
             const isCorrect = answer === correctAnswer;
             if (isCorrect) {
-                console.log('correct answer');
                 setanswerState('correct');
             } else {
                 setanswerState('incorrect');
@@ -29,19 +29,16 @@ const Quiz = () => {
         }, 1000);
     }, [activeQuestionIndex, questions]);
 
-    if (quizCompleted) {
-        return (
-            <div id="summary">
-                <img src={QuizCompleted} alt='quiyCompleted'></img>
-                <h2>Quiz complete</h2>
-            </div>
-        );
-    }
-
-
+   
     const handleSkipAnswer = useCallback(() => {
         handleSelectAnswer(null);
     }, [handleSelectAnswer]);
+
+     if (quizCompleted) {
+        return (
+           <Summary userAnswers={userAnswers}/>
+        );
+    }
 
     return (
         <div id='quiz'>
